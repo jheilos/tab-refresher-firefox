@@ -1,0 +1,335 @@
+<!-- popup.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 400px;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+    }
+    h3 {
+      margin-top: 0;
+      color: #333;
+    }
+    .status {
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .status.running {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .status.stopped {
+      background-color: #f44336;
+      color: white;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    button {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .start-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .pause-btn {
+      background-color: #ff9800;
+      color: white;
+    }
+    .settings {
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+    }
+    .input-group {
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      margin-bottom: 3px;
+      color: #666;
+      font-size: 12px;
+    }
+    input {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+    input[type="time"] {
+      width: 48%;
+    }
+    textarea {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      box-sizing: border-box;
+      font-family: monospace;
+      font-size: 12px;
+      resize: vertical;
+      min-height: 100px;
+    }
+    .save-btn {
+      width: 100%;
+      padding: 8px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .info {
+      font-size: 11px;
+      color: #666;
+      margin-top: 5px;
+    }
+    .error {
+      color: #f44336;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    h4 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    /* Time-based rules styles */
+    .time-rules-section {
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+    .time-rule {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #f9f9f9;
+    }
+    .time-rule-form {
+      border: 2px dashed #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #fafafa;
+    }
+    .time-inputs {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      margin: 5px 0;
+    }
+    .time-inputs span {
+      font-size: 12px;
+      color: #666;
+    }
+    .rule-urls {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin: 5px 0;
+    }
+    .rule-urls input {
+      font-size: 11px;
+    }
+    .rule-actions {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    .add-rule-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 6px 12px;
+      font-size: 12px;
+      flex: none;
+    }
+    .delete-rule-btn {
+      background-color: #f44336;
+      color: white;
+      padding: 4px 8px;
+      font-size: 11px;
+      flex: none;
+    }
+    .rule-display {
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    .rule-display strong {
+      color: #333;
+    }
+    .rule-display .time-range {
+      color: #2196F3;
+      font-weight: bold;
+    }
+    .rule-display .url {
+      color: #666;
+      word-break: break-all;
+    }
+    .current-time {
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+      margin-bottom: 10px;
+      padding: 5px;
+      background-color: #f0f0f0;
+      border-radius: 3px;
+    }
+
+    /* Backup section styles */
+    .backup-section {
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+    .backup-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .export-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 16px;
+      font-size: 12px;
+      flex: 1;
+    }
+    .import-btn {
+      background-color: #2196F3;
+      color: white;
+      padding: 8px 16px;
+      font-size: 12px;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <h3>Tab Refresher Control</h3>
+
+  <div id="status" class="status stopped">
+    Stopped
+  </div>
+
+  <div class="controls">
+    <button id="startBtn" class="start-btn">Start New Cycle</button>
+    <button id="pauseBtn" class="pause-btn" disabled>Pause Cycle</button>
+  </div>
+
+  <div class="settings">
+    <h4>URLs to Cycle Through</h4>
+
+    <div class="input-group">
+      <label for="urls">Enter URLs (one per line)</label>
+      <textarea id="urls"
+                placeholder="https://www.youtube.com/
+https://www.twitch.tv/kXXX
+https://example.com/
+https://github.com/"
+      ></textarea>
+      <div class="info">Enter at least one URL to start the cycle</div>
+      <div id="urlError" class="error" style="display: none;"></div>
+    </div>
+
+    <h4>Timing Settings</h4>
+
+    <div class="input-group">
+      <label for="longWait">Long Wait Time (minutes)</label>
+      <input type="number" id="longWait" min="1" max="60" value="5">
+      <div class="info">Wait time on first tab</div>
+    </div>
+
+    <div class="input-group">
+      <label for="shortWait">Short Wait Time (seconds)</label>
+      <input type="number" id="shortWait" min="1" max="300" value="10">
+      <div class="info">Wait after refresh before next tab</div>
+    </div>
+
+    <div class="input-group">
+      <label for="preRefresh">Pre-Refresh Delay (seconds)</label>
+      <input type="number" id="preRefresh" min="0.5" max="10" step="0.5" value="2">
+      <div class="info">Wait after switch before refresh</div>
+    </div>
+
+    <button id="saveBtn" class="save-btn">Save Settings</button>
+
+    <h4 style="margin-top: 20px;">Backup & Restore</h4>
+    <div class="backup-section">
+      <div class="input-group">
+        <div class="backup-controls">
+          <button id="exportBtn" class="export-btn">Export Settings</button>
+          <button id="importBtn" class="import-btn">Import Settings</button>
+        </div>
+        <input type="file" id="importFile" accept=".json" style="display: none;">
+        <div class="info">Export your settings to backup or share. Import to restore previous settings.</div>
+        <div id="backupStatus" class="info" style="display: none; color: #4CAF50; font-weight: bold;"></div>
+        <div id="backupError" class="error" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-rules-section">
+    <h4>Time-Based URL Rules</h4>
+    <div class="current-time">
+      Current time: <span id="currentTime"></span>
+    </div>
+    <div class="info" style="margin-bottom: 10px;">
+      Create rules to automatically switch URLs based on time. Perfect for Twitch streamers with scheduled streams!
+    </div>
+
+    <div id="timeRulesList"></div>
+
+    <div class="time-rule-form">
+      <div class="input-group">
+        <label>Original URL (from your URL list above)</label>
+        <input type="url" id="newRuleOriginal" placeholder="https://www.twitch.tv/XXX">
+      </div>
+
+      <div class="input-group">
+        <label>Replacement URL (when outside active hours)</label>
+        <input type="url" id="newRuleReplacement" placeholder="https://www.twitch.tv/XXX_24_7">
+      </div>
+
+      <div class="input-group">
+        <label>Active Time Range (when to use original URL)</label>
+        <div class="time-inputs">
+          <input type="time" id="newRuleStart" value="15:00">
+          <span>to</span>
+          <input type="time" id="newRuleEnd" value="00:00">
+        </div>
+        <div class="info">Example: 15:00 to 00:00 means use original URL from 3 PM to midnight, replacement URL from midnight to 3 PM</div>
+      </div>
+
+      <div class="rule-actions">
+        <button id="addRuleBtn" class="add-rule-btn">Add Time Rule</button>
+      </div>
+      <div id="ruleError" class="error" style="display: none;"></div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "manifest_version": 2,
+  "name": "Tab Refresher",
+  "version": "1.1.0",
+  "description": "Automatically refresh multiple tabs in a cycle with time-based URL switching. Perfect for monitoring dashboards, live streams, or any websites requiring regular updates. Features customizable timing, Twitch streaming schedules, and settings backup/restore.",
+
+  "author": "Joshua Heilos",
+  "homepage_url": "https://github.com/jheilos/tab-refresher-firefox",
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "tab-refresher@jheilos.de",
+      "strict_min_version": "75.0"
+    }
+  },
+
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "<all_urls>",
+    "notifications",
+    "storage"
+  ],
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+
+  "browser_action": {
+    "default_title": "Tab Refresher - Cycle through and refresh multiple tabs",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  }
+}
