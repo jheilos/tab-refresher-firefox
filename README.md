@@ -10,46 +10,67 @@ Perfect for monitoring dashboards, live streams, Twitch streaming schedules, or 
 - **Automatic Tab Cycling**: Continuously refresh multiple tabs in sequence
 - **Time-Based URL Switching**: Automatically switch between URLs based on schedules
 - **Customizable Timing**: Configure wait times and refresh delays to your needs
-- **Settings Backup/Restore**: Export and import your configurations
+- **Multiple Import Methods**: File upload, paste import, and clipboard import
+- **Settings Backup/Restore**: Export and import your configurations with ease
 - **Smart Notifications**: Get notified when cycles start, stop, or encounter issues
+- **Dedicated Settings Page**: Full-featured options page for advanced configuration
 
-### **Perfect for Streamers Watchers**
+### **Perfect for Stream Watchers**
 - **Twitch Integration**: Automatically switch between live channels and 24/7 streams
 - **Streaming Schedules**: Set up time-based rules for when streamers go live/offline
 - **Multi-Platform**: Works with Twitch, YouTube, and any streaming platform
-
 
 ## 📖 Quick Start Guide
 
 ### **Basic Setup**
 1. **Install the extension** in Firefox
 2. **Click the Tab Refresher icon** in your toolbar
-3. **Add URLs** (one per line) in the "URLs to Cycle Through" section
-4. **Configure timing**:
-    - **Long Wait Time**: How long to stay on the first tab (default: 5 minutes)
-    - **Short Wait Time**: Time between tab switches (default: 10 seconds)
-    - **Pre-Refresh Delay**: Wait time before refreshing each tab (default: 2 seconds)
-5. **Click "Start New Cycle"** to begin
+3. **Click "⚙️ Open Settings & Import/Export"** to access the full settings page
+4. **Add URLs** (one per line) in the "URLs to Cycle Through" section
+5. **Configure timing**:
+   - **Long Wait Time**: How long to stay on the first tab (default: 5 minutes)
+   - **Short Wait Time**: Time between tab switches (default: 10 seconds)
+   - **Pre-Refresh Delay**: Wait time before refreshing each tab (default: 2 seconds)
+6. **Click "💾 Save All Settings"** to save your configuration
+7. **Return to popup** and click **"Start Cycle"** to begin
 
-### **Advanced: Time-Based URL Rules**
+### **Quick Actions (Popup)**
+The popup provides quick access to:
+- **Start/Pause** the tab cycle
+- **View current configuration** summary (URLs, rules, timing)
+- **Quick Import from Clipboard** for fast JSON import
+- **Open Settings** for full configuration
+
+### **Advanced Configuration (Settings Page)**
+Access via popup → "⚙️ Open Settings & Import/Export" for:
+- **Full URL management**
+- **Time-based rule creation**
+- **Import/Export settings**
+- **Advanced timing configuration**
+
+### **Time-Based URL Rules**
 Perfect for Twitch streamers or scheduled content:
 
-1. **Add your main URL** to the URL list (e.g., `https://www.twitch.tv/yourstreamer`)
-2. **Create a time rule**:
-    - **Original URL**: The main channel URL
-    - **Replacement URL**: Alternative URL (e.g., `https://www.twitch.tv/yourstreamer_24_7`)
-    - **Active Time Range**: When to use the original URL (e.g., 15:00 to 00:00)
+1. **Open Settings page** from the popup
+2. **Add your main URL** to the URL list (e.g., `https://www.twitch.tv/yourstreamer`)
+3. **Scroll to "Time-Based URL Rules"** section
+4. **Create a time rule**:
+   - **Original URL**: The main channel URL
+   - **Replacement URL**: Alternative URL (e.g., `https://www.twitch.tv/yourstreamer_24_7`)
+   - **Active Time Range**: When to use the original URL (e.g., 15:00 to 00:00)
+5. **Click "Add Time Rule"**
+6. **Save settings** with "💾 Save All Settings"
 
 **Example**: Stream is live 3 PM to midnight → show live channel. Outside those hours → show 24/7 channel.
 
 ## 🔧 Installation Methods
 
 ### **Option 1: Firefox Add-ons Store (AMO)**
-*Maybe *
+*Coming soon - pending review*
 
 ### **Option 2: Self-Installation**
 1. **Download the extension files**
-2. **Create icons folder** with PNG icons (16x16, 32x32, 48x48, 128x128)
+2. **Create icons folder** with PNG icons (16x16, 24x24, 32x32, 48x48, 128x128)
 3. **Package as XPI**:
    ```bash
    # Using web-ext (recommended)
@@ -57,12 +78,12 @@ Perfect for Twitch streamers or scheduled content:
    web-ext build
    
    # Or manual ZIP
-   zip -r tab-refresher.xpi manifest.json background.js popup.html popup.js icons/
+   zip -r tab-refresher.xpi manifest.json background.js popup.html popup.js options.html options.js icons/
    ```
 4. **Install in Firefox**:
-    - Go to `about:addons`
-    - Click gear icon → "Install Add-on From File"
-    - Select your `.xpi` file
+   - Go to `about:addons`
+   - Click gear icon → "Install Add-on From File"
+   - Select your `.xpi` file
 
 ### **Option 3: Developer Mode**
 1. **Download source files**
@@ -74,81 +95,104 @@ Perfect for Twitch streamers or scheduled content:
 
 ```
 tab-refresher/
-├── manifest.json          # Extension configuration
-├── background.js          # Main logic and tab management
-├── popup.html            # User interface
-├── popup.js              # UI functionality and settings
+├── manifest.json          # Extension configuration (includes options_ui)
+├── background.js          # Enhanced logic, storage, and tab management  
+├── popup.html            # Simplified popup interface
+├── popup.js              # Popup functionality and quick actions
+├── options.html          # Full-featured settings page (NEW)
+├── options.js            # Settings page logic and file operations (NEW)
 ├── icons/                # Extension icons (you need to create these)
 │   ├── icon-16.png       # 16x16 pixel icon
+│   ├── icon-24.png       # 24x24 pixel icon (NEW)
 │   ├── icon-32.png       # 32x32 pixel icon
 │   ├── icon-48.png       # 48x48 pixel icon
 │   └── icon-128.png      # 128x128 pixel icon
 └── README.md             # This documentation
 ```
 
+## 💾 Settings Import/Export (Multiple Methods)
+
+Version 1.2 introduces multiple ways to import/export settings:
+
+### **Method 1: File Upload (Settings Page)**
+1. **Open Settings** from popup
+2. **Scroll to "Backup & Restore"** section
+3. **Export**: Click "📤 Export Settings" to download JSON file
+4. **Import**: Select JSON file using "Select a JSON settings file" input
+5. **Click "📁 Import from File"**
+
+### **Method 2: Paste Import (Settings Page)**
+1. **Copy JSON content** from exported file
+2. **Open Settings** from popup
+3. **Scroll to "Backup & Restore"** section
+4. **Paste content** into "Paste JSON content" text area
+5. **Click "📋 Import from Paste"**
+
+### **Method 3: Quick Clipboard Import (Popup)**
+1. **Copy JSON settings** to clipboard
+2. **Open popup**
+3. **Click "📋 Quick Import from Clipboard"**
+4. Settings automatically imported and applied
+
+### **Why Multiple Methods?**
+- **File Upload**: Most reliable for large configurations
+- **Paste Import**: Works when file dialogs cause issues
+- **Clipboard Import**: Fastest for quick sharing/testing
+
 ## 🎯 Configuration Examples
 
 ### **Twitch Streamer Monitoring**
-```
-Main URLs:
-https://www.twitch.tv/yourfavoritestreamer
-
-Time-Based Rule:
-- Original: https://www.twitch.tv/yourfavoritestreamer
-- Replacement: https://www.twitch.tv/yourfavoritestreamer_24_7
-- Active Time: 15:00 to 00:00
-
-Timing:
-- Long Wait: 5 minutes
-- Short Wait: 30 seconds
-- Pre-Refresh: 3 seconds
-```
-
-### **Business Dashboard Monitoring**
-```
-URLs:
-https://analytics.yourcompany.com/dashboard
-https://status.yourcompany.com
-https://sales.yourcompany.com/metrics
-
-Timing:
-- Long Wait: 2 minutes
-- Short Wait: 5 seconds
-- Pre-Refresh: 1 second
+```json
+{
+  "urls": ["https://www.twitch.tv/yourfavoritestreamer"],
+  "longWait": 5,
+  "shortWait": 30,
+  "preRefresh": 3,
+  "timeBasedRules": [
+    {
+      "originalUrl": "https://www.twitch.tv/yourfavoritestreamer",
+      "replacementUrl": "https://www.twitch.tv/yourfavoritestreamer_24_7",
+      "startTime": "15:00",
+      "endTime": "00:00"
+    }
+  ]
+}
 ```
 
-### **News Monitoring**
-```
-URLs:
-https://news.ycombinator.com
-https://www.reddit.com/r/technology
-https://techcrunch.com
-
-Timing:
-- Long Wait: 10 minutes
-- Short Wait: 15 seconds
-- Pre-Refresh: 2 seconds
 ```
 
-## ⚙️ Settings Backup & Restore
+## 🔄 User Interface Guide
 
-### **Export Settings**
-- Click **"Export Settings"** to download a JSON file
-- Contains all URLs, timing settings, and time-based rules
-- Filename includes timestamp for easy organization
+### **Popup Interface** (Quick Controls)
+- **Status Display**: Shows if cycling is running/stopped
+- **Start/Pause Buttons**: Basic cycle control
+- **Configuration Summary**: Quick view of URLs, rules, timing
+- **Quick Import**: Fast clipboard-based import
+- **Settings Access**: Opens full settings page
 
-### **Import Settings**
-- Click **"Import Settings"** and select a JSON file
-- Validates all settings before applying
-- Replaces current configuration completely
+### **Settings Page Interface** (Full Configuration)
+- **URL Management**: Add, edit, and organize URLs
+- **Timing Configuration**: Detailed timing controls
+- **Time-Based Rules**: Create and manage URL switching rules
+- **Import/Export**: Multiple import methods and export options
+- **Real-time Preview**: See which rules are currently active
 
-### **Share Configurations**
-Perfect for teams or multiple setups:
-- Export your work dashboard configuration
-- Share with colleagues
-- Import gaming/streaming setups
+### **Navigation Flow**
+```
+Popup (Quick Actions) 
+    ↓ "Open Settings"
+Settings Page (Full Configuration)
+    ↓ Save & Return
+Popup (Start Cycle)
+```
 
-## 🛠️ Technical Details
+## ⚙️ Technical Details
+
+### **Architecture (v1.2)**
+- **Popup**: Lightweight UI for quick actions and status
+- **Options Page**: Full-featured settings with file operations
+- **Background Script**: Centralized storage and tab management
+- **Message Passing**: Clean communication between components
 
 ### **Permissions Explained**
 - **`tabs`**: Required to create, switch between, and refresh tabs
@@ -158,9 +202,10 @@ Perfect for teams or multiple setups:
 - **`storage`**: Saves your settings and configurations
 
 ### **Browser Compatibility**
-- **Firefox 75+**: Full compatibility
-- **Manifest V2**: Uses stable Manifest V2 (no plans to deprecate)
+- **Firefox 75+**: Full compatibility with all features
+- **Manifest V2**: Uses stable Manifest V2 format
 - **Performance**: Optimized for minimal resource usage
+- **File Operations**: Uses dedicated options page (Firefox requirement)
 
 ### **Privacy & Security**
 - **No data collection**: Extension operates entirely locally
@@ -172,10 +217,20 @@ Perfect for teams or multiple setups:
 
 ### **Common Issues**
 
+**Import not working in popup**
+- Use the Settings page for file import (popup file dialogs close in Firefox)
+- Try Quick Clipboard Import instead
+- Verify JSON format is valid
+
 **Extension not starting**
 - Check that at least one URL is configured
 - Verify URLs are valid (include `http://` or `https://`)
-- Check browser console for error messages
+- Open browser console for error messages
+
+**Settings not saving**
+- Use "💾 Save All Settings" button in Settings page
+- Check browser storage permissions
+- Try exporting settings as backup before changes
 
 **URLs not loading**
 - Ensure websites allow being loaded in tabs
@@ -184,26 +239,30 @@ Perfect for teams or multiple setups:
 
 **Time rules not working**
 - Verify time format is HH:MM (24-hour)
-- Check that original URL matches exactly
+- Check that original URL matches exactly in URL list
 - Ensure rule times don't conflict
-
-**Settings not saving**
-- Check browser storage permissions
-- Try restarting the extension
-- Export settings as backup before changes
+- Check current time display in Settings page
 
 ### **Debug Mode**
-Enable verbose logging by opening browser console:
-1. **Right-click extension icon** → Inspect
-2. **Go to Console tab**
-3. **Look for `[Tab Refresher]` messages**
+Enable verbose logging:
+1. **Open browser console**: F12 → Console tab
+2. **Look for messages**: `[Popup]`, `[Options]`, `[Background]`
+3. **Check extension pages**:
+   - Right-click extension icon → Inspect (for popup)
+   - Go to about:debugging → This Firefox → Inspect (for background)
+
+### **Getting Help**
+- **Check console logs** for detailed error messages
+- **Try different import methods** if one fails
+- **Export working config** before making changes
+- **Restart extension** in about:addons if needed
 
 ## 🚀 Development
 
 ### **Contributing**
 1. **Fork the repository**
 2. **Create feature branch**: `git checkout -b feature/amazing-feature`
-3. **Make changes and test thoroughly**
+3. **Test both popup and options page**
 4. **Submit pull request with detailed description**
 
 ### **Local Development**
@@ -214,18 +273,21 @@ npm install -g web-ext
 # Start development server
 web-ext run
 
-# Build for distribution
+# Build for distribution  
 web-ext build
 
 # Lint code
 web-ext lint
 ```
 
-### **Release Process**
-1. **Update version** in `manifest.json`
-2. **Test all functionality**
-3. **Create release build**: `web-ext build`
-4. **Submit to AMO** or distribute privately
+### **Testing Checklist**
+- [ ] Popup opens and displays status correctly
+- [ ] Settings page opens from popup
+- [ ] All import methods work (file, paste, clipboard)
+- [ ] Export downloads valid JSON
+- [ ] Time rules activate/deactivate correctly
+- [ ] Tab cycling works with various URL types
+- [ ] Settings persist after browser restart
 
 ## 📄 License
 
@@ -239,6 +301,7 @@ This project is open source. Feel free to modify and distribute according to you
 
 ## 🔄 Version History
 
+- **v1.2.0**: Major architecture refactor - Added dedicated options page, multiple import methods, enhanced UI separation, fixed Firefox popup file input issues
 - **v1.1.0**: Added time-based URL switching, settings export/import, improved error handling
 - **v1.0.0**: Initial release with basic tab cycling functionality
 

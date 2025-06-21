@@ -1,335 +1,214 @@
-<!-- popup.html -->
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <style>
     body {
-      width: 400px;
-      padding: 10px;
+      width: 350px;
+      padding: 15px;
       font-family: Arial, sans-serif;
+      margin: 0;
     }
+
     h3 {
-      margin-top: 0;
+      margin: 0 0 15px 0;
       color: #333;
+      text-align: center;
     }
+
     .status {
-      padding: 10px;
+      padding: 12px;
       margin-bottom: 15px;
-      border-radius: 4px;
+      border-radius: 6px;
       text-align: center;
       font-weight: bold;
+      font-size: 14px;
     }
+
     .status.running {
       background-color: #4CAF50;
       color: white;
     }
+
     .status.stopped {
       background-color: #f44336;
       color: white;
     }
+
     .controls {
       display: flex;
       gap: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
+
     button {
-      flex: 1;
-      padding: 8px;
+      padding: 10px 15px;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
       font-weight: bold;
+      transition: opacity 0.2s;
     }
-    button:hover {
+
+    button:hover:not(:disabled) {
       opacity: 0.9;
     }
+
     button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
-    .start-btn {
+
+    .primary-btn {
+      flex: 1;
       background-color: #4CAF50;
       color: white;
     }
-    .pause-btn {
+
+    .secondary-btn {
+      flex: 1;
       background-color: #ff9800;
       color: white;
     }
-    .settings {
-      border-top: 1px solid #ddd;
+
+    .quick-settings {
+      border-top: 1px solid #e0e0e0;
       padding-top: 15px;
-    }
-    .input-group {
-      margin-bottom: 10px;
-    }
-    label {
-      display: block;
-      margin-bottom: 3px;
-      color: #666;
-      font-size: 12px;
-    }
-    input {
-      width: 100%;
-      padding: 5px;
-      border: 1px solid #ddd;
-      border-radius: 3px;
-      box-sizing: border-box;
-    }
-    input[type="time"] {
-      width: 48%;
-    }
-    textarea {
-      width: 100%;
-      padding: 5px;
-      border: 1px solid #ddd;
-      border-radius: 3px;
-      box-sizing: border-box;
-      font-family: monospace;
-      font-size: 12px;
-      resize: vertical;
-      min-height: 100px;
-    }
-    .save-btn {
-      width: 100%;
-      padding: 8px;
-      background-color: #2196F3;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-    .info {
-      font-size: 11px;
-      color: #666;
-      margin-top: 5px;
-    }
-    .error {
-      color: #f44336;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-    h4 {
-      margin-top: 0;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
-    /* Time-based rules styles */
-    .time-rules-section {
-      border-top: 1px solid #ddd;
-      padding-top: 15px;
-      margin-top: 15px;
-    }
-    .time-rule {
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      padding: 10px;
-      margin-bottom: 10px;
-      background-color: #f9f9f9;
-    }
-    .time-rule-form {
-      border: 2px dashed #ddd;
-      border-radius: 4px;
-      padding: 10px;
-      margin-bottom: 10px;
-      background-color: #fafafa;
-    }
-    .time-inputs {
+    .setting-row {
       display: flex;
-      gap: 5px;
+      justify-content: space-between;
       align-items: center;
-      margin: 5px 0;
+      margin-bottom: 10px;
+      padding: 8px 0;
     }
-    .time-inputs span {
-      font-size: 12px;
+
+    .setting-label {
+      font-size: 13px;
       color: #666;
+      font-weight: 500;
     }
-    .rule-urls {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      margin: 5px 0;
+
+    .setting-value {
+      font-size: 13px;
+      color: #333;
+      font-weight: bold;
     }
-    .rule-urls input {
+
+    .actions {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 15px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      background: #f8f9fa;
+      color: #495057;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #e9ecef;
+      border-color: #adb5bd;
+      text-decoration: none;
+    }
+
+    .action-btn.settings {
+      background: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    .action-btn.settings:hover {
+      background: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .info-text {
       font-size: 11px;
-    }
-    .rule-actions {
-      display: flex;
-      gap: 5px;
+      color: #6c757d;
+      text-align: center;
       margin-top: 10px;
-    }
-    .add-rule-btn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 6px 12px;
-      font-size: 12px;
-      flex: none;
-    }
-    .delete-rule-btn {
-      background-color: #f44336;
-      color: white;
-      padding: 4px 8px;
-      font-size: 11px;
-      flex: none;
-    }
-    .rule-display {
-      font-size: 11px;
       line-height: 1.4;
     }
-    .rule-display strong {
-      color: #333;
-    }
-    .rule-display .time-range {
-      color: #2196F3;
-      font-weight: bold;
-    }
-    .rule-display .url {
-      color: #666;
-      word-break: break-all;
-    }
-    .current-time {
-      font-size: 11px;
-      color: #666;
-      text-align: center;
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 12px;
       margin-bottom: 10px;
-      padding: 5px;
-      background-color: #f0f0f0;
-      border-radius: 3px;
+      display: none;
     }
 
-    /* Backup section styles */
-    .backup-section {
-      border-top: 1px solid #ddd;
-      padding-top: 15px;
-      margin-top: 15px;
-    }
-    .backup-controls {
-      display: flex;
-      gap: 10px;
+    .success {
+      background: #d4edda;
+      color: #155724;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 12px;
       margin-bottom: 10px;
-    }
-    .export-btn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 8px 16px;
-      font-size: 12px;
-      flex: 1;
-    }
-    .import-btn {
-      background-color: #2196F3;
-      color: white;
-      padding: 8px 16px;
-      font-size: 12px;
-      flex: 1;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h3>Tab Refresher Control</h3>
+<h3>Tab Refresher</h3>
 
-  <div id="status" class="status stopped">
-    Stopped
+<div id="status" class="status stopped">
+  Not Running
+</div>
+
+<div id="error" class="error"></div>
+<div id="success" class="success"></div>
+
+<div class="controls">
+  <button id="startBtn" class="primary-btn">Start Cycle</button>
+  <button id="pauseBtn" class="secondary-btn" disabled>Pause</button>
+</div>
+
+<div class="quick-settings">
+  <div class="setting-row">
+    <span class="setting-label">URLs Configured:</span>
+    <span id="urlCount" class="setting-value">0</span>
   </div>
-
-  <div class="controls">
-    <button id="startBtn" class="start-btn">Start New Cycle</button>
-    <button id="pauseBtn" class="pause-btn" disabled>Pause Cycle</button>
+  <div class="setting-row">
+    <span class="setting-label">Time Rules:</span>
+    <span id="ruleCount" class="setting-value">0</span>
   </div>
-
-  <div class="settings">
-    <h4>URLs to Cycle Through</h4>
-
-    <div class="input-group">
-      <label for="urls">Enter URLs (one per line)</label>
-      <textarea id="urls"
-                placeholder="https://www.youtube.com/
-https://www.twitch.tv/kXXX
-https://example.com/
-https://github.com/"
-      ></textarea>
-      <div class="info">Enter at least one URL to start the cycle</div>
-      <div id="urlError" class="error" style="display: none;"></div>
-    </div>
-
-    <h4>Timing Settings</h4>
-
-    <div class="input-group">
-      <label for="longWait">Long Wait Time (minutes)</label>
-      <input type="number" id="longWait" min="1" max="60" value="5">
-      <div class="info">Wait time on first tab</div>
-    </div>
-
-    <div class="input-group">
-      <label for="shortWait">Short Wait Time (seconds)</label>
-      <input type="number" id="shortWait" min="1" max="300" value="10">
-      <div class="info">Wait after refresh before next tab</div>
-    </div>
-
-    <div class="input-group">
-      <label for="preRefresh">Pre-Refresh Delay (seconds)</label>
-      <input type="number" id="preRefresh" min="0.5" max="10" step="0.5" value="2">
-      <div class="info">Wait after switch before refresh</div>
-    </div>
-
-    <button id="saveBtn" class="save-btn">Save Settings</button>
-
-    <h4 style="margin-top: 20px;">Backup & Restore</h4>
-    <div class="backup-section">
-      <div class="input-group">
-        <div class="backup-controls">
-          <button id="exportBtn" class="export-btn">Export Settings</button>
-          <button id="importBtn" class="import-btn">Import Settings</button>
-        </div>
-        <input type="file" id="importFile" accept=".json" style="display: none;">
-        <div class="info">Export your settings to backup or share. Import to restore previous settings.</div>
-        <div id="backupStatus" class="info" style="display: none; color: #4CAF50; font-weight: bold;"></div>
-        <div id="backupError" class="error" style="display: none;"></div>
-      </div>
-    </div>
+  <div class="setting-row">
+    <span class="setting-label">Long Wait:</span>
+    <span id="longWaitDisplay" class="setting-value">5 min</span>
   </div>
-
-  <div class="time-rules-section">
-    <h4>Time-Based URL Rules</h4>
-    <div class="current-time">
-      Current time: <span id="currentTime"></span>
-    </div>
-    <div class="info" style="margin-bottom: 10px;">
-      Create rules to automatically switch URLs based on time. Perfect for Twitch streamers with scheduled streams!
-    </div>
-
-    <div id="timeRulesList"></div>
-
-    <div class="time-rule-form">
-      <div class="input-group">
-        <label>Original URL (from your URL list above)</label>
-        <input type="url" id="newRuleOriginal" placeholder="https://www.twitch.tv/XXX">
-      </div>
-
-      <div class="input-group">
-        <label>Replacement URL (when outside active hours)</label>
-        <input type="url" id="newRuleReplacement" placeholder="https://www.twitch.tv/XXX_24_7">
-      </div>
-
-      <div class="input-group">
-        <label>Active Time Range (when to use original URL)</label>
-        <div class="time-inputs">
-          <input type="time" id="newRuleStart" value="15:00">
-          <span>to</span>
-          <input type="time" id="newRuleEnd" value="00:00">
-        </div>
-        <div class="info">Example: 15:00 to 00:00 means use original URL from 3 PM to midnight, replacement URL from midnight to 3 PM</div>
-      </div>
-
-      <div class="rule-actions">
-        <button id="addRuleBtn" class="add-rule-btn">Add Time Rule</button>
-      </div>
-      <div id="ruleError" class="error" style="display: none;"></div>
-    </div>
+  <div class="setting-row">
+    <span class="setting-label">Short Wait:</span>
+    <span id="shortWaitDisplay" class="setting-value">10 sec</span>
   </div>
+</div>
 
-  <script src="popup.js"></script>
+<div class="actions">
+  <button id="openSettings" class="action-btn settings">⚙️ Open Settings & Import/Export</button>
+  <button id="quickPaste" class="action-btn">📋 Quick Import from Clipboard</button>
+</div>
+
+<div class="info-text">
+  Use "Open Settings" for file import/export and advanced configuration.<br>
+  Quick Import reads JSON directly from your clipboard.
+</div>
+
+<script src="popup.js"></script>
 </body>
 </html>

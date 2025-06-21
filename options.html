@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tab Refresher Settings</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+
+        .header p {
+            margin: 0;
+            color: #6c757d;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            margin: 0 0 20px 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        input[type="number"], input[type="text"], input[type="url"], input[type="time"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .time-rule {
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f8f9fa;
+        }
+
+        .time-rule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rule-status {
+            font-weight: bold;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .rule-status.active {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .rule-status.inactive {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .rule-details {
+            font-size: 13px;
+            color: #495057;
+        }
+
+        .rule-details strong {
+            color: #212529;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .time-inputs input {
+            flex: 1;
+        }
+
+        .time-inputs span {
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .import-export-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .import-export-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .time-inputs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        .file-import-area {
+            border: 2px dashed #e9ecef;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+            margin-bottom: 15px;
+        }
+
+        .current-time {
+            text-align: center;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>🔄 Tab Refresher Settings</h1>
+    <p>Configure URLs, timing, time-based rules, and import/export settings</p>
+</div>
+
+<!-- Status Messages -->
+<div id="successAlert" class="alert alert-success hidden"></div>
+<div id="errorAlert" class="alert alert-error hidden"></div>
+
+<!-- URL Configuration -->
+<div class="section">
+    <h2>🌐 URLs to Cycle Through</h2>
+    <div class="form-group">
+        <label for="urls">Enter URLs (one per line):</label>
+        <textarea id="urls" placeholder="https://www.youtube.com/
+https://www.twitch.tv/streamer
+https://example.com/dashboard
+https://github.com/"></textarea>
+        <div class="help-text">Enter at least one URL. Each URL should be on a separate line.</div>
+    </div>
+</div>
+
+<!-- Timing Settings -->
+<div class="section">
+    <h2>⏱️ Timing Settings</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+        <div class="form-group">
+            <label for="longWait">Long Wait Time (minutes):</label>
+            <input type="number" id="longWait" min="1" max="60" value="5">
+            <div class="help-text">Wait time on the first tab before cycling</div>
+        </div>
+        <div class="form-group">
+            <label for="shortWait">Short Wait Time (seconds):</label>
+            <input type="number" id="shortWait" min="1" max="300" value="10">
+            <div class="help-text">Wait time between tab switches</div>
+        </div>
+        <div class="form-group">
+            <label for="preRefresh">Pre-Refresh Delay (seconds):</label>
+            <input type="number" id="preRefresh" min="0.5" max="10" step="0.5" value="2">
+            <div class="help-text">Wait after switching before refreshing</div>
+        </div>
+    </div>
+</div>
+
+<!-- Time-Based Rules -->
+<div class="section">
+    <h2>🕒 Time-Based URL Rules</h2>
+    <div class="current-time">
+        Current time: <span id="currentTime"></span>
+    </div>
+    <div class="alert alert-info">
+        <strong>How it works:</strong> Create rules to automatically switch URLs based on time. Perfect for Twitch streamers with scheduled streams! During "active hours", the original URL is used. Outside active hours, the replacement URL is used.
+    </div>
+
+    <div id="timeRulesList"></div>
+
+    <!-- Add New Rule Form -->
+    <div style="border: 2px dashed #007bff; border-radius: 6px; padding: 20px; background-color: #f8f9ff;">
+        <h3 style="margin-top: 0;">Add New Time Rule</h3>
+        <div class="form-group">
+            <label for="newRuleOriginal">Original URL (from your URL list above):</label>
+            <input type="url" id="newRuleOriginal" placeholder="https://www.twitch.tv/streamer">
+        </div>
+        <div class="form-group">
+            <label for="newRuleReplacement">Replacement URL (when outside active hours):</label>
+            <input type="url" id="newRuleReplacement" placeholder="https://www.twitch.tv/streamer_247">
+        </div>
+        <div class="form-group">
+            <label>Active Time Range (when to use original URL):</label>
+            <div class="time-inputs">
+                <input type="time" id="newRuleStart" value="15:00">
+                <span>to</span>
+                <input type="time" id="newRuleEnd" value="00:00">
+            </div>
+            <div class="help-text">Example: 15:00 to 00:00 means use original URL from 3 PM to midnight, replacement URL from midnight to 3 PM</div>
+        </div>
+        <button id="addRuleBtn" class="btn-success">Add Time Rule</button>
+        <div id="ruleError" class="alert alert-error hidden" style="margin-top: 10px;"></div>
+    </div>
+</div>
+
+<!-- Import/Export -->
+<div class="section">
+    <h2>💾 Backup & Restore</h2>
+    <div class="import-export-grid">
+        <!-- Export -->
+        <div>
+            <h3>Export Settings</h3>
+            <p>Save your current configuration to a JSON file.</p>
+            <button id="exportBtn" class="btn-success">📤 Export Settings</button>
+        </div>
+
+        <!-- Import -->
+        <div>
+            <h3>Import Settings</h3>
+            <p>Load configuration from a JSON file or paste content directly.</p>
+            <div class="file-import-area">
+                <input type="file" id="fileInput" accept=".json" style="margin-bottom: 10px;">
+                <div style="font-size: 12px; color: #6c757d;">Select a JSON settings file</div>
+            </div>
+            <div style="margin: 15px 0; text-align: center; color: #6c757d; font-weight: 600;">OR</div>
+            <div class="form-group">
+                <label for="jsonPaste">Paste JSON content:</label>
+                <textarea id="jsonPaste" placeholder='Paste your exported JSON here, e.g.:
+{
+  "urls": ["https://example.com"],
+  "longWait": 5,
+  "shortWait": 10,
+  "preRefresh": 2,
+  "timeBasedRules": []
+}' style="min-height: 100px;"></textarea>
+            </div>
+            <div class="button-group">
+                <button id="importFileBtn" class="btn-primary">📁 Import from File</button>
+                <button id="importPasteBtn" class="btn-warning">📋 Import from Paste</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="section">
+    <div class="button-group">
+        <button id="saveBtn" class="btn-primary">💾 Save All Settings</button>
+        <button id="resetBtn" class="btn-secondary">🔄 Reload from Storage</button>
+    </div>
+</div>
+
+<script src="options.js"></script>
+</body>
+</html>

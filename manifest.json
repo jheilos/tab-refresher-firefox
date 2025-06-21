@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Tab Refresher",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Automatically refresh multiple tabs in a cycle with time-based URL switching. Perfect for monitoring dashboards, live streams, or any websites requiring regular updates. Features customizable timing, Twitch streaming schedules, and settings backup/restore.",
 
   "author": "Joshua Heilos",
@@ -16,9 +16,12 @@
 
   "icons": {
     "16": "icons/icon-16.png",
-    "32": "icons/icon-32.png",
-    "48": "icons/icon-48.png",
-    "128": "icons/icon-128.png"
+    "24": "icons/icon-24.png",
+    "32": "icons/icon.svg",
+    "48": "icons/icon.svg",
+    "64": "icons/icon.svg",
+    "96": "icons/icon.svg",
+    "128": "icons/icon.svg"
   },
 
   "permissions": [
@@ -39,7 +42,14 @@
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon-16.png",
-      "32": "icons/icon-32.png"
+      "24": "icons/icon-24.png",
+      "32": "icons/icon.svg",
+      "64": "icons/icon.svg"
     }
+  },
+
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
   }
 }
